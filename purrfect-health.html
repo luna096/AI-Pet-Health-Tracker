@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Purrfect Health</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Fraunces:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --coral:   #FF6B6B;
+      --peach:   #FF9A76;
+      --yellow:  #FFD166;
+      --mint:    #06D6A0;
+      --sky:     #4CC9F0;
+      --purple:  #9B5DE5;
+      --pink:    #F72585;
+      --bg:      #FFF8F0;
+      --surface: #FFFFFF;
+      --surface2: #FFF0E8;
+      --text:    #2D2013;
+      --text-secondary: #7A6555;
+      --text-tertiary:  #B5A090;
+      --border:  rgba(45,32,19,0.08);
+      --radius:  16px;
+      --radius-sm: 10px;
+      --shadow:  0 4px 24px rgba(255,107,107,0.12);
+      --shadow-lg: 0 8px 40px rgba(255,107,107,0.18);
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── App Shell ── */
+    .app { display: flex; width: 100%; min-height: 100vh; }
+
+    /* ── Sidebar Nav ── */
+    .nav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-right: 1.5px solid var(--border);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--coral);
+      padding: 0 8px 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1.5px solid var(--border);
+      margin-bottom: 0.5rem;
+    }
+
+    .nav-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item:hover { background: var(--surface2); color: var(--text); }
+    .nav-item.active { background: linear-gradient(135deg, #FF6B6B22, #FF9A7622); color: var(--coral); }
+    .nav-item .nav-icon { font-size: 18px; width: 24px; text-align: center; }
+
+    .nav-cat-section {
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1.5px solid var(--border);
+    }
+    .nav-cat {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .nav-cat-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--yellow), var(--peach));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .nav-cat-name { font-size: 13px; font-weight: 800; }
+    .nav-cat-breed { font-size: 11px; color: var(--text-tertiary); }
+
+    /* ── Main ── */
+    .main { flex: 1; overflow-y: auto; }
+    .screen { display: none; padding: 2rem; max-width: 1000px; animation: fadeIn 0.2s ease; }
+    .screen.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ── Page Header ── */
+    .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 12px; }
+    .page-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .page-sub { font-size: 14px; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
+
+    .btn {
+      padding: 0 20px; height: 42px; border-radius: 999px;
+      font-size: 14px; font-weight: 800; cursor: pointer; border: none;
+      transition: all 0.15s; font-family: 'Nunito', sans-serif;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--coral), var(--peach)); color: #fff; box-shadow: 0 4px 16px rgba(255,107,107,0.35); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,107,107,0.45); }
+    .btn-ghost { background: var(--surface); border: 1.5px solid var(--border); color: var(--text-secondary); }
+    .btn-ghost:hover { border-color: var(--coral); color: var(--coral); }
+    .btn-mint { background: linear-gradient(135deg, var(--mint), #00C896); color: #fff; box-shadow: 0 4px 16px rgba(6,214,160,0.3); }
+    .btn-purple { background: linear-gradient(135deg, var(--purple), #7B2FBE); color: #fff; box-shadow: 0 4px 16px rgba(155,93,229,0.3); }
+
+    /* ── Cards ── */
+    .card { background: var(--surface); border-radius: var(--radius); border: 1.5px solid var(--border); padding: 1.25rem 1.5rem; }
+    .card-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-tertiary); margin-bottom: 12px; }
+
+    /* ── Grid ── */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+    /* ══════════════════════════════
+       DASHBOARD
+    ══════════════════════════════ */
+    .dash-hero {
+      background: linear-gradient(135deg, #FF6B6B, #FF9A76, #FFD166);
+      border-radius: 20px;
+      padding: 2rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .dash-hero::before {
+      content: '🐱';
+      position: absolute;
+      right: 2rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 80px;
+      opacity: 0.35;
+    }
+    .dash-hero-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; flex-shrink: 0;
+      border: 3px solid rgba(255,255,255,0.5);
+    }
+    .dash-hero-name { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; }
+    .dash-hero-meta { font-size: 13px; opacity: 0.85; font-weight: 600; margin-top: 4px; }
+    .dash-hero-score {
+      margin-left: auto; text-align: center; margin-right: 5rem;
+    }
+    .dash-hero-score-num { font-family: 'Fraunces', serif; font-size: 48px; font-weight: 700; line-height: 1; }
+    .dash-hero-score-label { font-size: 12px; opacity: 0.85; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; }
+
+    .stat-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      padding: 1.25rem;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .stat-card-icon { font-size: 24px; margin-bottom: 4px; }
+    .stat-card-val { font-size: 22px; font-weight: 900; font-family: 'Fraunces', serif; }
+    .stat-card-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat-card-tag { font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; width: fit-content; margin-top: 2px; }
+    .tag-green { background: #E8FFF5; color: #00A870; }
+    .tag-yellow { background: #FFF8E0; color: #C98A00; }
+    .tag-red { background: #FFE8E8; color: #CC3333; }
+    .tag-blue { background: #E8F4FF; color: #0066CC; }
+
+    .activity-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0; border-bottom: 1.5px solid var(--border);
+      font-size: 14px;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .activity-text { font-weight: 700; flex: 1; }
+    .activity-time { font-size: 12px; color: var(--text-tertiary); font-weight: 600; }
+
+    /* ══════════════════════════════
+       CAT PROFILE
+    ══════════════════════════════ */
+    .profile-hero {
+      background: linear-gradient(135deg, #9B5DE5, #F72585);
+      border-radius: 20px;
+      padding: 2rem;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .profile-avatar-big {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; margin: 0 auto 1rem;
+      border: 3px solid rgba(255,255,255,0.4);
+    }
+    .profile-name { font-family: 'Fraunces', serif; font-size: 30px; font-weight: 700; }
+    .profile-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+    .profile-chip {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .form-label { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); }
+    .form-input {
+      height: 44px; padding: 0 14px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 600;
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      outline: none; transition: border-color 0.15s;
+      width: 100%;
+    }
+    .form-input:focus { border-color: var(--coral); }
+    .form-select { height: 44px; padding: 0 14px; appearance: none; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A6555' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 14px center; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; color: var(--text); font-family: 'Nunito', sans-serif; outline: none; transition: border-color 0.15s; width: 100%; cursor: pointer; }
+    .form-select:focus { border-color: var(--coral); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* ══════════════════════════════
+       HEALTH LOG
+    ══════════════════════════════ */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--coral), var(--yellow), var(--mint)); border-radius: 2px; }
+    .timeline-item { position: relative; margin-bottom: 20px; }
+    .timeline-dot { position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 2px var(--coral); background: var(--coral); }
+    .timeline-dot.yellow { background: var(--yellow); box-shadow: 0 0 0 2px var(--yellow); }
+    .timeline-dot.mint { background: var(--mint); box-shadow: 0 0 0 2px var(--mint); }
+    .timeline-dot.sky { background: var(--sky); box-shadow: 0 0 0 2px var(--sky); }
+    .timeline-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
+    .timeline-date { font-size: 11px; font-weight: 800; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+    .timeline-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .timeline-body { font-size: 13px; color: var(--text-secondary); font-weight: 600; line-height: 1.6; }
+    .timeline-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .tl-tag { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+    .tl-tag-coral { background: #FFE8E8; color: var(--coral); }
+    .tl-tag-mint  { background: #E8FFF5; color: var(--mint); }
+    .tl-tag-sky   { background: #E8F6FF; color: var(--sky); }
+    .tl-tag-yellow{ background: #FFF8E0; color: #C98A00; }
+
+    /* ══════════════════════════════
+       AI HEALTH RISK
+    ══════════════════════════════ */
+    .risk-hero {
+      background: linear-gradient(135deg, #4CC9F0, #9B5DE5);
+      border-radius: 20px; padding: 2rem; color: #fff;
+      margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.5rem;
+    }
+    .risk-score-circle {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: 3px solid rgba(255,255,255,0.4);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .risk-score-num { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; line-height: 1; }
+    .risk-score-label { font-size: 10px; opacity: 0.8; font-weight: 700; text-transform: uppercase; }
+    .risk-hero-text { flex: 1; }
+    .risk-hero-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .risk-hero-body { font-size: 13px; opacity: 0.9; font-weight: 600; line-height: 1.6; }
+
+    .risk-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 1rem; border-radius: var(--radius-sm);
+      margin-bottom: 10px; border: 1.5px solid;
+    }
+    .risk-item.high   { background: #FFF0F0; border-color: #FFD0D0; }
+    .risk-item.medium { background: #FFFBF0; border-color: #FFE8A0; }
+    .risk-item.low    { background: #F0FFF8; border-color: #B0FFDC; }
+    .risk-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .risk-name { font-size: 14px; font-weight: 800; margin-bottom: 3px; }
+    .risk-desc { font-size: 13px; color: var(--text-secondary); font-weight: 600; line-height: 1.5; }
+    .risk-level { font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 999px; width: fit-content; margin-top: 6px; }
+    .risk-level.high   { background: #FFD0D0; color: #CC3333; }
+    .risk-level.medium { background: #FFE8A0; color: #996600; }
+    .risk-level.low    { background: #B0FFDC; color: #007744; }
+
+    .recommendation {
+      display: flex; gap: 12px; padding: 1rem;
+      background: linear-gradient(135deg, #F0F8FF, #E8F5FF);
+      border: 1.5px solid #C0DFFF; border-radius: var(--radius-sm);
+      margin-bottom: 10px;
+    }
+    .rec-icon { font-size: 22px; flex-shrink: 0; }
+    .rec-title { font-size: 14px; font-weight: 800; margin-bottom: 3px; color: var(--sky); }
+    .rec-body { font-size: 13px; color: var(--text-secondary); font-weight: 600; line-height: 1.5; }
+
+    /* ══════════════════════════════
+       FOOD TRACKER
+    ══════════════════════════════ */
+    .food-hero {
+      background: linear-gradient(135deg, #FFD166, #FF9A76);
+      border-radius: 20px; padding: 1.5rem 2rem;
+      color: #fff; display: flex; align-items: center;
+      gap: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .food-hero-icon { font-size: 48px; }
+    .food-hero-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; }
+    .food-hero-sub { font-size: 13px; opacity: 0.9; font-weight: 600; margin-top: 4px; }
+    .macro-bar-wrap { margin-bottom: 12px; }
+    .macro-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 5px; }
+    .macro-bar-bg { height: 10px; border-radius: 999px; background: var(--surface2); overflow: hidden; }
+    .macro-bar-fill { height: 100%; border-radius: 999px; }
+
+    .meal-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px; background: var(--surface2);
+      border-radius: var(--radius-sm); margin-bottom: 8px;
+    }
+    .meal-icon { font-size: 24px; }
+    .meal-name { font-size: 14px; font-weight: 800; flex: 1; }
+    .meal-amount { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+    .meal-cal { font-size: 13px; font-weight: 800; color: var(--peach); }
+
+    /* ══════════════════════════════
+       VET APPOINTMENTS
+    ══════════════════════════════ */
+    .vet-hero {
+      background: linear-gradient(135deg, #06D6A0, #4CC9F0);
+      border-radius: 20px; padding: 1.5rem 2rem;
+      color: #fff; display: flex; align-items: center;
+      gap: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .vet-hero-icon { font-size: 48px; }
+    .vet-hero-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; }
+    .vet-hero-sub { font-size: 13px; opacity: 0.9; font-weight: 600; margin-top: 4px; }
+
+    .appt-card {
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem;
+      display: flex; gap: 1rem; align-items: flex-start;
+      margin-bottom: 12px; transition: transform 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .appt-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .appt-date-box {
+      width: 56px; flex-shrink: 0; text-align: center;
+      background: linear-gradient(135deg, var(--coral), var(--peach));
+      border-radius: 12px; padding: 8px 4px; color: #fff;
+    }
+    .appt-month { font-size: 10px; font-weight: 800; text-transform: uppercase; opacity: 0.85; }
+    .appt-day { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; line-height: 1; }
+    .appt-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+    .appt-vet { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+    .appt-time { font-size: 12px; font-weight: 800; color: var(--mint); margin-top: 6px; }
+    .appt-status {
+      margin-left: auto; font-size: 11px; font-weight: 800;
+      padding: 4px 10px; border-radius: 999px; height: fit-content;
+    }
+    .status-upcoming { background: #E8F4FF; color: var(--sky); }
+    .status-done     { background: #E8FFF5; color: var(--mint); }
+    .status-overdue  { background: #FFE8E8; color: var(--coral); }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .nav { display: none; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .screen { padding: 1rem; }
+      .dash-hero-score { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Sidebar ── -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">🐾</div>
+      Purrfect
+    </div>
+
+    <button class="nav-item active" onclick="showScreen('dashboard', this)">
+      <span class="nav-icon">🏠</span> Dashboard
+    </button>
+    <button class="nav-item" onclick="showScreen('profile', this)">
+      <span class="nav-icon">🐱</span> Cat Profile
+    </button>
+    <button class="nav-item" onclick="showScreen('health', this)">
+      <span class="nav-icon">📋</span> Health Log
+    </button>
+    <button class="nav-item" onclick="showScreen('ai', this)">
+      <span class="nav-icon">✨</span> AI Analysis
+    </button>
+    <button class="nav-item" onclick="showScreen('food', this)">
+      <span class="nav-icon">🍽️</span> Food Tracker
+    </button>
+    <button class="nav-item" onclick="showScreen('vet', this)">
+      <span class="nav-icon">🏥</span> Vet Appointments
+    </button>
+
+    <div class="nav-cat-section">
+      <div class="nav-cat">
+        <div class="nav-cat-avatar">🐈</div>
+        <div>
+          <div class="nav-cat-name">Mochi</div>
+          <div class="nav-cat-breed">Scottish Fold · 3 yrs</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main Content ── -->
+  <main class="main">
+
+    <!-- ══ DASHBOARD ══ -->
+    <div class="screen active" id="screen-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Good morning! 🌞</div>
+          <div class="page-sub">Here's Mochi's health overview for today</div>
+        </div>
+        <button class="btn btn-primary" onclick="showScreen('health', document.querySelector('[onclick*=health]'))">+ Log Health</button>
+      </div>
+
+      <!-- Hero -->
+      <div class="dash-hero">
+        <div class="dash-hero-avatar">🐈</div>
+        <div>
+          <div class="dash-hero-name">Mochi</div>
+          <div class="dash-hero-meta">Scottish Fold · Female · 3 years old · 4.2 kg</div>
+        </div>
+        <div class="dash-hero-score">
+          <div class="dash-hero-score-num">87</div>
+          <div class="dash-hero-score-label">Health Score</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid-4" style="margin-bottom:1.5rem;">
+        <div class="stat-card">
+          <div class="stat-card-icon">⚖️</div>
+          <div class="stat-card-val">4.2 kg</div>
+          <div class="stat-card-label">Weight</div>
+          <div class="stat-card-tag tag-green">Healthy</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">🍽️</div>
+          <div class="stat-card-val">240 cal</div>
+          <div class="stat-card-label">Today's Food</div>
+          <div class="stat-card-tag tag-yellow">80% of goal</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">💧</div>
+          <div class="stat-card-val">180 ml</div>
+          <div class="stat-card-label">Water Intake</div>
+          <div class="stat-card-tag tag-red">Below goal</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">🏥</div>
+          <div class="stat-card-val">Apr 15</div>
+          <div class="stat-card-label">Next Vet Visit</div>
+          <div class="stat-card-tag tag-blue">19 days away</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <!-- Recent Activity -->
+        <div class="card">
+          <div class="card-title">Recent Activity</div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:#FFE8E8;">💊</div>
+            <div>
+              <div class="activity-text">Flea medication given</div>
+              <div style="font-size:12px;color:var(--text-tertiary);font-weight:600;">Monthly dose</div>
+            </div>
+            <div class="activity-time">Today</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:#E8FFF5;">🍽️</div>
+            <div>
+              <div class="activity-text">Wet food — Salmon</div>
+              <div style="font-size:12px;color:var(--text-tertiary);font-weight:600;">85g · 120 cal</div>
+            </div>
+            <div class="activity-time">8:30 AM</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:#FFF8E0;">💧</div>
+            <div>
+              <div class="activity-text">Water fountain refilled</div>
+              <div style="font-size:12px;color:var(--text-tertiary);font-weight:600;">Fresh water</div>
+            </div>
+            <div class="activity-time">Yesterday</div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-icon" style="background:#E8F4FF;">⚖️</div>
+            <div>
+              <div class="activity-text">Weight logged</div>
+              <div style="font-size:12px;color:var(--text-tertiary);font-weight:600;">4.2 kg — stable</div>
+            </div>
+            <div class="activity-time">Mar 25</div>
+          </div>
+        </div>
+
+        <!-- AI Alerts -->
+        <div class="card">
+          <div class="card-title">AI Health Alerts</div>
+          <div class="risk-item high" style="margin-bottom:10px;">
+            <div class="risk-icon">💧</div>
+            <div>
+              <div class="risk-name">Low Water Intake</div>
+              <div class="risk-desc">Mochi has been drinking less than recommended for 3 days. This could indicate stress or early kidney issues.</div>
+              <div class="risk-level high">High Priority</div>
+            </div>
+          </div>
+          <div class="risk-item medium">
+            <div class="risk-icon">🦷</div>
+            <div>
+              <div class="risk-name">Dental Check Due</div>
+              <div class="risk-desc">It's been 8 months since last dental cleaning. Scottish Folds are prone to dental issues.</div>
+              <div class="risk-level medium">Medium Priority</div>
+            </div>
+          </div>
+          <div style="margin-top:12px;">
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="showScreen('ai', document.querySelector('[onclick*=ai]'))">View Full AI Analysis ✨</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CAT PROFILE ══ -->
+    <div class="screen" id="screen-profile">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Cat Profile 🐱</div>
+          <div class="page-sub">Manage your cat's details</div>
+        </div>
+        <button class="btn btn-primary">Save Changes</button>
+      </div>
+
+      <div class="profile-hero">
+        <div class="profile-avatar-big">🐈</div>
+        <div class="profile-name">Mochi</div>
+        <div class="profile-chips">
+          <span class="profile-chip">Scottish Fold</span>
+          <span class="profile-chip">Female</span>
+          <span class="profile-chip">3 years old</span>
+          <span class="profile-chip">Spayed</span>
+          <span class="profile-chip">Indoor</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Basic Info</div>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">Name</div>
+              <input class="form-input" value="Mochi" />
+            </div>
+            <div class="form-group">
+              <div class="form-label">Breed</div>
+              <select class="form-select">
+                <option selected>Scottish Fold</option>
+                <option>Siamese</option>
+                <option>Persian</option>
+                <option>Maine Coon</option>
+                <option>Bengal</option>
+                <option>British Shorthair</option>
+                <option>Ragdoll</option>
+                <option>Mixed / Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">Date of Birth</div>
+              <input class="form-input" type="date" value="2022-03-15" />
+            </div>
+            <div class="form-group">
+              <div class="form-label">Sex</div>
+              <select class="form-select">
+                <option selected>Female</option>
+                <option>Male</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <div class="form-label">Weight (kg)</div>
+              <input class="form-input" type="number" value="4.2" step="0.1" />
+            </div>
+            <div class="form-group">
+              <div class="form-label">Color / Markings</div>
+              <input class="form-input" value="Gray tabby" />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">Medical Info</div>
+            <div class="form-group">
+              <div class="form-label">Spayed / Neutered</div>
+              <select class="form-select"><option selected>Yes — Spayed</option><option>Yes — Neutered</option><option>No</option></select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Microchip ID</div>
+              <input class="form-input" value="985141002345678" />
+            </div>
+            <div class="form-group">
+              <div class="form-label">Known Allergies</div>
+              <input class="form-input" placeholder="e.g. chicken, fish..." value="None known" />
+            </div>
+            <div class="form-group">
+              <div class="form-label">Current Medications</div>
+              <input class="form-input" value="Monthly flea treatment" />
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Lifestyle</div>
+            <div class="form-row">
+              <div class="form-group">
+                <div class="form-label">Indoor / Outdoor</div>
+                <select class="form-select"><option selected>Indoor only</option><option>Indoor + Outdoor</option><option>Outdoor</option></select>
+              </div>
+              <div class="form-group">
+                <div class="form-label">Activity Level</div>
+                <select class="form-select"><option>Low</option><option selected>Moderate</option><option>High</option></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ HEALTH LOG ══ -->
+    <div class="screen" id="screen-health">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Health Log 📋</div>
+          <div class="page-sub">Track symptoms, behaviors & health events</div>
+        </div>
+        <button class="btn btn-primary" onclick="toggleLogForm()">+ Add Entry</button>
+      </div>
+
+      <!-- Add entry form (hidden by default) -->
+      <div class="card" id="logForm" style="display:none;margin-bottom:1.5rem;">
+        <div class="card-title">New Health Entry</div>
+        <div class="form-row">
+          <div class="form-group">
+            <div class="form-label">Date</div>
+            <input class="form-input" type="date" />
+          </div>
+          <div class="form-group">
+            <div class="form-label">Entry Type</div>
+            <select class="form-select">
+              <option>Symptom</option>
+              <option>Medication</option>
+              <option>Weight</option>
+              <option>Behavior Change</option>
+              <option>Vet Visit</option>
+              <option>Vaccination</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Notes</div>
+          <input class="form-input" placeholder="Describe what you observed..." />
+        </div>
+        <div style="display:flex;gap:10px;margin-top:4px;">
+          <button class="btn btn-primary">Save Entry</button>
+          <button class="btn btn-ghost" onclick="toggleLogForm()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card-title" style="padding-left:4px;margin-bottom:12px;">Timeline</div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">Mar 27, 2026</div>
+                <div class="timeline-title">Low energy observed</div>
+                <div class="timeline-body">Mochi seemed unusually lethargic in the afternoon. Ate normally but less playful than usual. Monitoring closely.</div>
+                <div class="timeline-tags">
+                  <span class="tl-tag tl-tag-coral">Symptom</span>
+                  <span class="tl-tag tl-tag-yellow">Monitoring</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot yellow"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">Mar 24, 2026</div>
+                <div class="timeline-title">Monthly flea treatment applied</div>
+                <div class="timeline-body">Applied Frontline Plus — monthly topical treatment. No adverse reaction observed.</div>
+                <div class="timeline-tags">
+                  <span class="tl-tag tl-tag-mint">Medication</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot sky"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">Mar 20, 2026</div>
+                <div class="timeline-title">Vet visit — Annual checkup</div>
+                <div class="timeline-body">All vitals normal. Dr. Patel noted slight tartar buildup on back teeth. Recommended dental cleaning within 3 months. Weight stable at 4.2kg.</div>
+                <div class="timeline-tags">
+                  <span class="tl-tag tl-tag-sky">Vet Visit</span>
+                  <span class="tl-tag tl-tag-coral">Dental Note</span>
+                </div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot mint"></div>
+              <div class="timeline-card">
+                <div class="timeline-date">Mar 10, 2026</div>
+                <div class="timeline-title">Weight logged — 4.2 kg</div>
+                <div class="timeline-body">Monthly weigh-in. Stable weight, consistent with last 3 months. Body condition score: 5/9 (ideal).</div>
+                <div class="timeline-tags">
+                  <span class="tl-tag tl-tag-mint">Weight</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">Weight Trend</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${['Jan','Feb','Mar','Apr'].map((m,i) => {
+                const vals = [4.1, 4.15, 4.2, 4.2];
+                const pct = ((vals[i] - 3.8) / 1.0) * 100;
+                return `<div>
+                  <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;margin-bottom:4px;">
+                    <span>${m} 2026</span><span>${vals[i]} kg</span>
+                  </div>
+                  <div style="height:8px;border-radius:999px;background:var(--surface2);overflow:hidden;">
+                    <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--coral),var(--peach));border-radius:999px;"></div>
+                  </div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Symptoms Frequency</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="activity-item">
+                <div class="activity-icon" style="background:#FFE8E8;">💧</div>
+                <div class="activity-text">Reduced water intake</div>
+                <div class="activity-time" style="color:var(--coral);font-weight:800;">3x this month</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background:#FFF8E0;">😴</div>
+                <div class="activity-text">Lethargy episodes</div>
+                <div class="activity-time" style="color:var(--yellow);font-weight:800;">2x this month</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon" style="background:#E8FFF5;">🤢</div>
+                <div class="activity-text">Vomiting / hairball</div>
+                <div class="activity-time" style="color:var(--mint);font-weight:800;">1x this month</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ AI ANALYSIS ══ -->
+    <div class="screen" id="screen-ai">
+      <div class="page-header">
+        <div>
+          <div class="page-title">AI Health Analysis ✨</div>
+          <div class="page-sub">Powered by Claude — updated Mar 27, 2026</div>
+        </div>
+        <button class="btn btn-purple">Refresh Analysis</button>
+      </div>
+
+      <div class="risk-hero">
+        <div class="risk-score-circle">
+          <div class="risk-score-num">87</div>
+          <div class="risk-score-label">Health Score</div>
+        </div>
+        <div class="risk-hero-text">
+          <div class="risk-hero-title">Mochi is generally healthy with a few areas to watch</div>
+          <div class="risk-hero-body">Based on Mochi's health log, weight trends, breed profile, and recent symptoms, our AI has identified 3 risk areas and 4 recommendations to keep her in great shape.</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card-title" style="padding-left:4px;margin-bottom:12px;">Identified Risk Factors</div>
+          <div class="risk-item high">
+            <div class="risk-icon">💧</div>
+            <div>
+              <div class="risk-name">Kidney Health Risk</div>
+              <div class="risk-desc">Mochi's water intake has been consistently below 200ml/day for the past 3 days. Dehydration in cats can accelerate kidney disease, which is common in Scottish Folds.</div>
+              <div class="risk-level high">High Risk</div>
+            </div>
+          </div>
+          <div class="risk-item medium">
+            <div class="risk-icon">🦷</div>
+            <div>
+              <div class="risk-name">Periodontal Disease</div>
+              <div class="risk-desc">Tartar buildup noted by vet 7 days ago. Without treatment, this can lead to periodontal disease, which affects 70% of cats over 3 years old.</div>
+              <div class="risk-level medium">Medium Risk</div>
+            </div>
+          </div>
+          <div class="risk-item low">
+            <div class="risk-icon">🦴</div>
+            <div>
+              <div class="risk-name">Joint Issues (Breed-Specific)</div>
+              <div class="risk-desc">Scottish Folds are genetically predisposed to osteochondrodysplasia. Monitor for stiffness or limping, especially as she ages.</div>
+              <div class="risk-level low">Low Risk</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card-title" style="padding-left:4px;margin-bottom:12px;">AI Recommendations</div>
+          <div class="recommendation">
+            <div class="rec-icon">⛲</div>
+            <div>
+              <div class="rec-title">Get a Cat Water Fountain</div>
+              <div class="rec-body">Moving water encourages cats to drink more. A recirculating fountain can increase daily water intake by 50-70%. Try the Catit Flower Fountain.</div>
+            </div>
+          </div>
+          <div class="recommendation">
+            <div class="rec-icon">🦷</div>
+            <div>
+              <div class="rec-title">Schedule Dental Cleaning</div>
+              <div class="rec-body">Book a professional dental cleaning within the next 4-6 weeks. Ask your vet about enzymatic dental treats in the meantime.</div>
+            </div>
+          </div>
+          <div class="recommendation">
+            <div class="rec-icon">🐟</div>
+            <div>
+              <div class="rec-title">Increase Wet Food Ratio</div>
+              <div class="rec-body">Wet food has ~70-80% moisture content which helps with hydration. Consider switching to 100% wet food temporarily to boost water intake.</div>
+            </div>
+          </div>
+          <div class="recommendation">
+            <div class="rec-icon">🏃</div>
+            <div>
+              <div class="rec-title">Add Daily Playtime</div>
+              <div class="rec-body">15-20 min of interactive play daily will help with energy levels and joint health. Wand toys are ideal for Scottish Folds to avoid jumping strain.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FOOD TRACKER ══ -->
+    <div class="screen" id="screen-food">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Food Tracker 🍽️</div>
+          <div class="page-sub">Track Mochi's daily nutrition</div>
+        </div>
+        <button class="btn btn-primary">+ Log Meal</button>
+      </div>
+
+      <div class="food-hero">
+        <div class="food-hero-icon">🐟</div>
+        <div>
+          <div class="food-hero-title">Today's Nutrition</div>
+          <div class="food-hero-sub">240 / 300 cal · 80% of daily goal</div>
+        </div>
+        <div style="margin-left:auto;text-align:right;">
+          <div style="font-family:'Fraunces',serif;font-size:32px;font-weight:700;">80%</div>
+          <div style="font-size:12px;opacity:0.85;font-weight:700;">Daily Goal</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">Macronutrients Today</div>
+            <div class="macro-bar-wrap">
+              <div class="macro-label"><span>Protein</span><span style="color:var(--coral);font-weight:800;">18g / 22g</span></div>
+              <div class="macro-bar-bg"><div class="macro-bar-fill" style="width:82%;background:linear-gradient(90deg,var(--coral),var(--peach));"></div></div>
+            </div>
+            <div class="macro-bar-wrap">
+              <div class="macro-label"><span>Fat</span><span style="color:var(--yellow);font-weight:800;">8g / 10g</span></div>
+              <div class="macro-bar-bg"><div class="macro-bar-fill" style="width:80%;background:linear-gradient(90deg,var(--yellow),var(--peach));"></div></div>
+            </div>
+            <div class="macro-bar-wrap">
+              <div class="macro-label"><span>Carbs</span><span style="color:var(--mint);font-weight:800;">2g / 5g</span></div>
+              <div class="macro-bar-bg"><div class="macro-bar-fill" style="width:40%;background:linear-gradient(90deg,var(--mint),var(--sky));"></div></div>
+            </div>
+            <div class="macro-bar-wrap">
+              <div class="macro-label"><span>Water</span><span style="color:var(--sky);font-weight:800;">180ml / 250ml</span></div>
+              <div class="macro-bar-bg"><div class="macro-bar-fill" style="width:72%;background:linear-gradient(90deg,var(--sky),var(--purple));"></div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Today's Meals</div>
+            <div class="meal-item">
+              <div class="meal-icon">🌅</div>
+              <div>
+                <div class="meal-name">Breakfast — Wet Food</div>
+                <div class="meal-amount">Royal Canin Instinctive · Salmon</div>
+              </div>
+              <div>
+                <div class="meal-cal">120 cal</div>
+                <div class="meal-amount">85g</div>
+              </div>
+            </div>
+            <div class="meal-item">
+              <div class="meal-icon">🌤️</div>
+              <div>
+                <div class="meal-name">Lunch — Dry Kibble</div>
+                <div class="meal-amount">Hill's Science Diet · Indoor</div>
+              </div>
+              <div>
+                <div class="meal-cal">120 cal</div>
+                <div class="meal-amount">40g</div>
+              </div>
+            </div>
+            <div class="meal-item" style="opacity:0.4;">
+              <div class="meal-icon">🌙</div>
+              <div>
+                <div class="meal-name">Dinner — Not yet logged</div>
+                <div class="meal-amount">Scheduled for 6:00 PM</div>
+              </div>
+              <div class="meal-cal">— cal</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:16px;">
+            <div class="card-title">Weekly Calorie Trend</div>
+            <div style="display:flex;align-items:flex-end;gap:8px;height:120px;padding-top:10px;">
+              ${[260,290,240,310,280,245,240].map((v,i) => {
+                const days = ['M','T','W','T','F','S','S'];
+                const h = Math.round((v/340)*100);
+                const isToday = i===6;
+                return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                  <div style="font-size:10px;font-weight:800;color:var(--text-tertiary);">${v}</div>
+                  <div style="width:100%;height:${h}px;border-radius:6px 6px 0 0;background:${isToday?'linear-gradient(to top,var(--coral),var(--peach))':'var(--surface2)'};transition:all 0.3s;"></div>
+                  <div style="font-size:11px;font-weight:800;color:${isToday?'var(--coral)':'var(--text-tertiary)'};">${days[i]}</div>
+                </div>`;
+              }).join('')}
+            </div>
+            <div style="margin-top:8px;text-align:center;font-size:12px;font-weight:700;color:var(--text-secondary);">Daily goal: 300 cal</div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Feeding Schedule</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${[['7:00 AM','Wet food','85g','✅'],['12:00 PM','Dry kibble','40g','✅'],['6:00 PM','Wet food','85g','⏳']].map(([time,type,amt,status]) => `
+                <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface2);border-radius:var(--radius-sm);">
+                  <div style="font-size:18px;">${status}</div>
+                  <div style="flex:1;">
+                    <div style="font-size:13px;font-weight:800;">${time} — ${type}</div>
+                    <div style="font-size:12px;color:var(--text-tertiary);font-weight:600;">${amt}</div>
+                  </div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ VET APPOINTMENTS ══ -->
+    <div class="screen" id="screen-vet">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Vet Appointments 🏥</div>
+          <div class="page-sub">Upcoming & past visits</div>
+        </div>
+        <button class="btn btn-mint">+ Book Appointment</button>
+      </div>
+
+      <div class="vet-hero">
+        <div class="vet-hero-icon">🩺</div>
+        <div>
+          <div class="vet-hero-title">Next appointment in 19 days</div>
+          <div class="vet-hero-sub">Annual checkup with Dr. Patel · Apr 15, 2026 at 10:00 AM</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card-title" style="padding-left:4px;margin-bottom:12px;">Upcoming</div>
+          <div class="appt-card">
+            <div class="appt-date-box">
+              <div class="appt-month">APR</div>
+              <div class="appt-day">15</div>
+            </div>
+            <div style="flex:1;">
+              <div class="appt-title">Annual Wellness Checkup</div>
+              <div class="appt-vet">Dr. Sarah Patel · Sunset Animal Clinic</div>
+              <div class="appt-time">🕙 10:00 AM · Est. 45 min</div>
+            </div>
+            <div class="appt-status status-upcoming">Upcoming</div>
+          </div>
+          <div class="appt-card">
+            <div class="appt-date-box" style="background:linear-gradient(135deg,var(--yellow),var(--peach));">
+              <div class="appt-month">APR</div>
+              <div class="appt-day">28</div>
+            </div>
+            <div style="flex:1;">
+              <div class="appt-title">Dental Cleaning</div>
+              <div class="appt-vet">Dr. Sarah Patel · Sunset Animal Clinic</div>
+              <div class="appt-time">🕙 2:00 PM · Est. 2 hrs</div>
+            </div>
+            <div class="appt-status status-upcoming">Upcoming</div>
+          </div>
+
+          <div class="card-title" style="padding-left:4px;margin:20px 0 12px;">Overdue</div>
+          <div class="appt-card">
+            <div class="appt-date-box" style="background:linear-gradient(135deg,var(--coral),var(--pink));">
+              <div class="appt-month">MAR</div>
+              <div class="appt-day">01</div>
+            </div>
+            <div style="flex:1;">
+              <div class="appt-title">Booster Vaccination</div>
+              <div class="appt-vet">FVRCP booster — due every 3 years</div>
+              <div class="appt-time">⚠️ Overdue by 26 days</div>
+            </div>
+            <div class="appt-status status-overdue">Overdue</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card-title" style="padding-left:4px;margin-bottom:12px;">Past Visits</div>
+          <div class="appt-card">
+            <div class="appt-date-box" style="background:linear-gradient(135deg,var(--mint),var(--sky));">
+              <div class="appt-month">MAR</div>
+              <div class="appt-day">20</div>
+            </div>
+            <div style="flex:1;">
+              <div class="appt-title">Annual Checkup</div>
+              <div class="appt-vet">Dr. Sarah Patel · Sunset Animal Clinic</div>
+              <div class="appt-time">✅ Completed · All clear</div>
+            </div>
+            <div class="appt-status status-done">Done</div>
+          </div>
+          <div class="appt-card">
+            <div class="appt-date-box" style="background:linear-gradient(135deg,var(--sky),var(--purple));">
+              <div class="appt-month">DEC</div>
+              <div class="appt-day">12</div>
+            </div>
+            <div style="flex:1;">
+              <div class="appt-title">Sick Visit — Vomiting</div>
+              <div class="appt-vet">Dr. James Kim · Emergency Vet</div>
+              <div class="appt-time">✅ Resolved · Hairball issue</div>
+            </div>
+            <div class="appt-status status-done">Done</div>
+          </div>
+
+          <div class="card" style="margin-top:16px;">
+            <div class="card-title">Vaccination Record</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${[['FVRCP','Mar 2023','Mar 2026','🔴 Overdue'],['Rabies','Mar 2023','Mar 2026','🔴 Overdue'],['FeLV','Mar 2023','Mar 2025','✅ Done'],['Flea/Tick','Mar 2026','Apr 2026','✅ Current']].map(([name,last,next,status]) => `
+                <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1.5px solid var(--border);">
+                  <div style="font-size:14px;font-weight:800;flex:1;">${name}</div>
+                  <div style="font-size:12px;color:var(--text-tertiary);font-weight:600;">Next: ${next}</div>
+                  <div style="font-size:12px;font-weight:800;">${status}</div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function showScreen(id, el) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('screen-' + id).classList.add('active');
+    if (el) el.classList.add('active');
+  }
+
+  function toggleLogForm() {
+    const form = document.getElementById('logForm');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
